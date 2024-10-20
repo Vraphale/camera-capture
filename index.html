@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自动摄像头启动</title>
+  <style>
+    body { text-align: center; margin-top: 50px; }
+    video, canvas { margin: 20px auto; display: block; }
+  </style>
+</head>
+<body>
+  <h2>摄像头已经启动，点击按钮抓拍照片</h2>
+  <video id="video" width="320" height="240" autoplay></video>
+  <button id="snap">抓拍</button>
+  <canvas id="canvas" width="320" height="240"></canvas>
+
+  <script>
+    // 自动访问用户的摄像头
+    window.onload = function() {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function(stream) {
+          var video = document.getElementById('video');
+          video.srcObject = stream;
+        })
+        .catch(function(err) {
+          alert("无法访问摄像头：" + err);
+        });
+    };
+
+    // 点击按钮时抓拍照片
+    document.getElementById("snap").addEventListener("click", function() {
+      var canvas = document.getElementById('canvas');
+      var context = canvas.getContext('2d');
+      var video = document.getElementById('video');
+      context.drawImage(video, 0, 0, 320, 240);
+    });
+  </script>
+</body>
+</html>
